@@ -1,4 +1,5 @@
-import { test, expect, EMPTY_STATE, openWhenHydrated, type Page } from "./fixtures";
+import type { Page } from "@playwright/test";
+import { test, expect, EMPTY_STATE, openWhenHydrated } from "./fixtures";
 import { analyzeA11y } from "./a11y";
 
 /** axe audit + focus order for the Tagihan Bulanan sheet (Pengaturan → Data). */
