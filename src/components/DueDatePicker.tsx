@@ -72,8 +72,11 @@ export function DueDatePicker({
 
   const close = (restoreFocus = true) => {
     setOpen(false);
-    if (restoreFocus) toggleRef.current?.focus();
+    // The focused day button unmounts with the popover, which would send focus
+    // to <body>. Restore on the next frame, after React committed the close.
+    if (restoreFocus) requestAnimationFrame(() => toggleRef.current?.focus());
   };
+
 
   const move = (day: number, delta: number) => {
     const next = new Date(Date.UTC(year, month, day + delta));
