@@ -14,6 +14,8 @@ const FORM_ORDER = [
   "billing-icon-receipt_long",
   "billing-amount",
   "billing-due-date",
+  "billing-due-date-toggle",
+
   "billing-recurring",
   "billing-tax",
   "billing-discount-mode",
