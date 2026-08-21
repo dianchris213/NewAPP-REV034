@@ -111,10 +111,17 @@ test.describe("Tagihan Bulanan — accessibility", () => {
     const last = page.getByTestId("billing-icon-receipt_long");
 
     await active.focus();
-    await page.keyboard.press("ArrowRight"); // wraps to the first option
-    await expect(first).toHaveAttribute("aria-checked", "true");
+    await expect(active).toBeFocused();
+
+    // Poll the first arrow press: on a cold, still-hydrating sheet the very
+    // first keydown can land before React attached its handler.
+    await expect(async () => {
+      await page.keyboard.press("ArrowRight"); // wraps to the first option
+      await expect(first).toHaveAttribute("aria-checked", "true", { timeout: 1_000 });
+    }).toPass({ timeout: 10_000 });
     await expect(first).toBeFocused();
     await expect(active).toHaveAttribute("aria-checked", "false");
+
 
     await page.keyboard.press("ArrowLeft"); // wraps back to the last option
     await expect(last).toHaveAttribute("aria-checked", "true");
