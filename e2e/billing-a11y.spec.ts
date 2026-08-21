@@ -88,8 +88,7 @@ test.describe("Tagihan Bulanan — accessibility", () => {
     expect(await activeTestId(page)).toBe(FORM_ORDER[0]);
 
     for (const id of FORM_ORDER.slice(1)) {
-      await page.keyboard.press("Tab");
-      expect(await activeTestId(page), `expected focus on ${id}`).toBe(id);
+      expect(await tabToNextControl(page), `expected focus on ${id}`).toBe(id);
     }
   });
 
@@ -100,10 +99,10 @@ test.describe("Tagihan Bulanan — accessibility", () => {
 
     const reverse = [...FORM_ORDER].reverse().slice(1);
     for (const id of reverse) {
-      await page.keyboard.press("Shift+Tab");
-      expect(await activeTestId(page), `expected focus back on ${id}`).toBe(id);
+      expect(await tabToNextControl(page, true), `expected focus back on ${id}`).toBe(id);
     }
   });
+
 
   test("the icon radiogroup toggles with arrows, Home/End and Space", async ({ page }) => {
     await openSheet(page);
