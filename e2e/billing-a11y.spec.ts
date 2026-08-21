@@ -31,6 +31,23 @@ async function activeTestId(page: Page): Promise<string> {
   );
 }
 
+/**
+ * Presses Tab (or Shift+Tab) until the focused control changes.
+ * `<input type="date">` exposes internal day/month/year segments that consume
+ * Tab without moving `document.activeElement`, so a single press is not enough
+ * — this keeps the assertion about the control order, not about key counts.
+ */
+async function tabToNextControl(page: Page, back = false): Promise<string> {
+  const from = await activeTestId(page);
+  for (let press = 0; press < 6; press += 1) {
+    await page.keyboard.press(back ? "Shift+Tab" : "Tab");
+    const now = await activeTestId(page);
+    if (now !== from) return now;
+  }
+  return from;
+}
+
+
 async function openSheet(page: Page) {
   await page.goto("/settings", { waitUntil: "domcontentloaded" });
   const sheet = page.getByTestId("billing-sheet");
